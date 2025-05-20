@@ -1,5 +1,5 @@
 {
-  "name": "niyamo_backend",
+  "name": "mondus_backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BigwigMediaAI/Niyamo_Backend.git"
+    "url": "git+https://github.com/BigwigMediaAI/Mondus_Bakend"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/BigwigMediaAI/Niyamo_Backend/issues"
+    "url": "https://github.com/BigwigMediaAI/Mondus_Bakend/issues"
   },
-  "homepage": "https://github.com/BigwigMediaAI/Niyamo_Backend#readme",
+  "homepage": "https://github.com/BigwigMediaAI/Mondus_Bakend#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
