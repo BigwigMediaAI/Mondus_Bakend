@@ -14,7 +14,7 @@ const sendEmail = async ({ to, subject, text, html }) => {
     });
 
     const mailOptions = {
-      from: `"Niyamo" <${process.env.EMAIL_USER}>`,
+      from: `"Mondus" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       text,
