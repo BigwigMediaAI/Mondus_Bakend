@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { connect } = require("./config/db");
 const subscriberRoutes = require("./routes/subscriber.routes");
+const promptRoute = require("./routes/promptConsultation");
 
 require("dotenv").config();
 
@@ -12,6 +13,7 @@ app.use(cors());
 
 // Routes
 app.use("/", subscriberRoutes);
+app.use("/api", promptRoute);
 
 // Start server
 app.listen(process.env.PORT, async () => {
