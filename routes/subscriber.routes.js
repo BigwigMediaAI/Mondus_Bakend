@@ -6,7 +6,7 @@ const Newsletter = require("../models/newsletter");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const Emailer = require("../models/SentEmailer");
+const Emailer = require("../models/emailer");
 
 // Configure multer for file uploads
 const upload = multer({ dest: "uploads/" });
