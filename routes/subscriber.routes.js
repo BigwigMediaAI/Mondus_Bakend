@@ -6,6 +6,7 @@ const Newsletter = require("../models/newsletter");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const Emailer = require("../models/SentEmailer");
 
 // Configure multer for file uploads
 const upload = multer({ dest: "uploads/" });
@@ -257,7 +258,6 @@ router.post("/send-emailer", upload.array("attachments"), async (req, res) => {
       });
     }
 
-    // Get target recipients
     const targetEmails =
       sendToAll === "true"
         ? (await Subscriber.find({})).map((s) => s.email)
@@ -269,16 +269,13 @@ router.post("/send-emailer", upload.array("attachments"), async (req, res) => {
       return res.status(404).json({ error: "No recipients found" });
     }
 
-    // Prepare attachments
     const attachments = req.files?.map((file) => ({
       filename: file.originalname,
       path: file.path,
     }));
 
-    // Generate HTML
     const html = generateHtml({ imageUrl, title, content, ctaText, ctaUrl });
 
-    // Send the email
     await sendEmail({
       to: targetEmails,
       subject,
@@ -287,7 +284,19 @@ router.post("/send-emailer", upload.array("attachments"), async (req, res) => {
       attachments,
     });
 
-    // Clean up files
+    // 💾 Save the campaign
+    await Emailer.create({
+      subject,
+      title,
+      content,
+      ctaText,
+      ctaUrl,
+      imageUrl,
+      attachments,
+      recipients: targetEmails,
+      sendToAll: sendToAll === "true",
+    });
+
     attachments?.forEach((file) => fs.unlink(file.path, () => {}));
 
     res.status(200).json({
