@@ -20,4 +20,13 @@ router.post("/prompt", async (req, res) => {
   }
 });
 
+router.get("/consultation", async (req, res) => {
+  try {
+    const consultations = await Prompt.find().sort({ createdAt: -1 });
+    res.status(200).json(consultations);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 module.exports = router;
