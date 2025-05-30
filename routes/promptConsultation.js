@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Prompt = require("../models/prompt.model");
+const Notify = require("../models/notify");
 
 // POST /api/prompt/submit
 router.post("/prompt", async (req, res) => {
@@ -39,7 +40,7 @@ router.post("/notifyme", async (req, res) => {
   }
 
   try {
-    const newPrompt = new Prompt({
+    const newPrompt = new Notify({
       purpose,
       category,
       bedrooms,
@@ -57,7 +58,7 @@ router.post("/notifyme", async (req, res) => {
 
 router.get("/notify", async (req, res) => {
   try {
-    const consultations = await Prompt.find().sort({ createdAt: -1 });
+    const consultations = await Notify.find().sort({ createdAt: -1 });
     res.status(200).json(consultations);
   } catch (error) {
     res.status(500).json({ error: "Server error" });
