@@ -3,24 +3,58 @@ const axios = require("axios");
 const xml2js = require("xml2js");
 const router = express.Router();
 
+const XML_URL = "https://connecteo.in/mondus-property-listing/website-xml.php";
+
+// Utility function to fetch and parse data
+async function getProperties() {
+  const response = await axios.get(XML_URL);
+  const xml = response.data;
+
+  return new Promise((resolve, reject) => {
+    xml2js.parseString(xml, { explicitArray: false }, (err, result) => {
+      if (err) return reject(err);
+      resolve(result.list.property || []);
+    });
+  });
+}
+
+// Route: All properties
 router.get("/properties", async (req, res) => {
   try {
-    const response = await axios.get(
-      "https://connecteo.in/mondus-property-listing/website-xml.php"
-    );
-    const xml = response.data;
-
-    xml2js.parseString(xml, { explicitArray: false }, (err, result) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to parse XML" });
-      }
-
-      //   console.log("Parsed result:", JSON.stringify(result, null, 2)); // ADD THIS
-
-      res.json(result); // TEMP: Send full parsed result to inspect
-    });
+    const properties = await getProperties();
+    res.json(properties);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch XML data" });
+    res.status(500).json({ error: "Failed to fetch properties" });
+  }
+});
+
+// Route: Rent properties
+router.get("/properties/rent", async (req, res) => {
+  try {
+    const properties = await getProperties();
+    const rentData = properties.filter(
+      (item) =>
+        item?.properties.property_purpose.key_0 === "Rent" ||
+        item?.name?.toLowerCase().includes("Rent")
+    );
+    res.json(rentData);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch rent properties" });
+  }
+});
+
+// Route: Sale properties
+router.get("/properties/sale", async (req, res) => {
+  try {
+    const properties = await getProperties();
+    const saleData = properties.filter(
+      (item) =>
+        item?.properties.property_purpose.key_0 === "Sale" ||
+        item?.name?.toLowerCase().includes("Sale")
+    );
+    res.json(saleData);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch sale properties" });
   }
 });
 
