@@ -19,7 +19,7 @@ async function getProperties() {
 }
 
 // Route: All properties
-router.get("/properties", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const properties = await getProperties();
     res.json(properties);
@@ -29,7 +29,7 @@ router.get("/properties", async (req, res) => {
 });
 
 // Route: Rent properties
-router.get("/properties/rent", async (req, res) => {
+router.get("/rent", async (req, res) => {
   try {
     const properties = await getProperties();
     const rentData = properties.filter(
@@ -44,7 +44,7 @@ router.get("/properties/rent", async (req, res) => {
 });
 
 // Route: Sale properties
-router.get("/properties/sale", async (req, res) => {
+router.get("/sale", async (req, res) => {
   try {
     const properties = await getProperties();
     const saleData = properties.filter(

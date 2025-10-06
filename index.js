@@ -19,7 +19,7 @@ app.use(cors());
 // Routes
 app.use("/", subscriberRoutes);
 app.use("/api", promptRoute);
-app.use("/api", propertList);
+app.use("/api/properties", propertList);
 app.use("/api/blogs", BlogRoute);
 app.use("/api/listing", listingRoutes);
 app.use("/api/opportunity", opportunityRoutes);
